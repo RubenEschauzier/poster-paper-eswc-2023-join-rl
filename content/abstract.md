@@ -1,15 +1,14 @@
 ## Abstract
 <!-- Context      -->
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Relational databases successfully leverage reinforcement learning to optimize query plans.
 <!-- Need         -->
-Vestibulum finibus dignissim augue, id pellentesque est facilisis non.
+This approach has insufficiently been translated to SPARQL query optimization.
 <!-- Task         -->
-Donec fringilla dolor non neque iaculis blandit.
+We will develop a reinforcement learning-based join plan optimizer, based on relational databases approaches, that works for SPARQL query optimization.
 <!-- Object       -->
-Praesent aliquet eleifend iaculis.
+In this poster paper we present some key aspects of our method and highlight open research problems.
 <!-- Findings     -->
-Quisque pellentesque at odio ac bibendum.
+We argue that while some aspects of relational database optimization can be reused, SPARQL query optimization presents unique challenges 
+not encountered in relational databases.
 <!-- Conclusion   -->
-Pellentesque imperdiet felis urna, quis facilisis lacus gravida non.
 <!-- Perspectives -->
-Donec quis lectus eget sem tempor tristique pellentesque in dolor.
