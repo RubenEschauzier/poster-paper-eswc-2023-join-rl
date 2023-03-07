@@ -1,4 +1,4 @@
-# My Scholarly Article
+# Reinforcement learning-based SPARQL join ordering optimizer using tree-LSTM
 
 ## Development mode
 ```
