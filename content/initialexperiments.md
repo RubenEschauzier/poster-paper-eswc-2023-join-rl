@@ -1,6 +1,6 @@
 ## Initial Experiments
 {:#initialexperiments}
-We use the WatDiv benchmark to test our method. In the absence of an extensive benchmark of our explored method, we show performance characteristics of an old iteration of the optimizer that is severely undertrained and unoptimized. We implement the optimizer in Comunica. In [](#initresults), we compare the incomplete optimizer to the optimizer used in [Comunica](cite:cites taelman2018comunica). The Table shows that while the RL-based optimizer mostly generates worse query plans, it can find better join plans than the standard optimizer for some query templates.
+We use the WatDiv benchmark to test our method. In the absence of an extensive benchmark of our explored method, we show performance characteristics of an old iteration of the optimizer that is severely undertrained and unoptimized. We implement the optimizer in Comunica and compare it to the standard optimizer of [Comunica](cite:cites taelman2018comunica). [](#initresults) shows that while the RL-based optimizer mostly generates worse query plans, it can find better join plans than the standard optimizer for some query templates.
 
 <figure id="initresults" class="table" markdown="1">
 
