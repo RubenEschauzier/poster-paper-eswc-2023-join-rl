@@ -12,10 +12,11 @@ that we design specifically for the selecting of join plans during SPARQL query 
 In this poster paper we present the key aspects of this method and highlight open research problems.
 <!-- Findings     -->
 We argue that while some aspects of relational database optimization can be reused,
-SPARQL query optimization presents unique challenges not encountered in relational databases.
+SPARQL query optimization presents unique challenges not encountered in relational databases. 
+Nevertheless, initial benchmarks show promising results to join plan quality.
 <!-- Conclusion   -->
 <!-- Perspectives -->
 
 {:.comment data-author="RT"}
-Can we end the abstract here with a conclusion on a positive note?
-Something like "Nevertheless, because ..., we believe this will provide significant performance benefits in ..."
+<!-- Can we end the abstract here with a conclusion on a positive note?
+Something like "Nevertheless, because ..., we believe this will provide significant performance benefits in ..." -->
