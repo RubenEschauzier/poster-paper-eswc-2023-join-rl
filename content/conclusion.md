@@ -1,3 +1,7 @@
 ## Conclusion
 {:#conclusion}
 In this poster paper we explore a novel RL-based join plan optimizer based on Q-learning. We discuss key points required to translate RL-based relational optimizers to SPARQL. We will improve sampling efficiency by using experience replay and applying time-outs. Furthermore, we avoid using feature vectors that depend on the number of unique RDF entities in the RDF graph, thus restricting the size of the feature vectors. Furthermore, we briefly touch on unsolved problems in our current methodology. The main problems are an absence of query shape encoding and the restriction of our method to basic graph patterns. Finally, we show some performance characteristics of a previous optimizer version that is severly undertrained and show that it can outperform existing optimizers.
+
+{:.comment data-author="RT"}
+I would remove the last sentence, and instead try to end on a stronger note.
+Point to the promising aspects of your approach, and that solving the main challenges may make it a very efficient method for query planning.
