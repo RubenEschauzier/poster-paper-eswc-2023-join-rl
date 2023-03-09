@@ -1,32 +1,7 @@
 ## Preliminary Results
 {:#initialexperiments}
-We use the WatDiv benchmark to test our method.
-
-{:.comment data-author="RT"}
-Cite watdiv!
-
-In the absence of an extensive benchmark of our explored method,
-
-{:.comment data-author="RT"}
-What do you mean by this? Is watdiv not extensive enough?
-
-we show performance characteristics of an old iteration of the optimizer that is severely undertrained and unoptimized.
-
-{:.comment data-author="RT"}
-"old" does not apply anymore?
-
-We have implemented our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default optimizer.
-
-{:.comment data-author="RT"}
-Might be good to explain in a sentence how this optimizer works.
-Because we want to compare **approaches**, and implementations just provide us with a way to achieve this.
-
-[](#initresults) shows that while the RL-based optimizer mostly generates worse query plans, it can find better join plans than the standard optimizer for some query templates.
-
-{:.comment data-author="RT"}
-Avoid imprecise terms like "mostly".
-Be exact here, like "in X% of the cases, Y is Z times faster".
-But be honest about the downsides as well.
+We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our method.
+While the explored method is not ready for benchmarking, we show performance characteristics of a previous iteration of the optimizer that is undertrained and unoptimized. We have implemented our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default, cardinality-based, optimizer. [](#initresults) shows that the undertrained model can find better plans for seven templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). The Table further shows that our method takes significantly longer to optimize a query. This dominates the plan execution time due to the small size of the benchmark dataset, however for large RDF graphs, like wikidata, this should not be the case.
 
 <figure id="initresults" class="table" markdown="1">
 
@@ -47,9 +22,7 @@ But be honest about the downsides as well.
 | Execution (Comunica)     | 0.006  | 0.007  | __0.139__  | __0.009__ | 0.008  | 0.005 | 0.009 | __0.001__ | __0.000__ |
 
 <figcaption markdown="block">
-Comparison of the query optimization and plan execution time, in seconds, of a previous version of our optimizer and the standard [Comunica](cite:cites taelman2018comunica) optimizer.
+Comparison of the query optimization and plan execution time, in seconds, of a previous version of our optimizer and the standard [Comunica](cite:cites taelman2018comunica) optimizer, with the faster plan execution in bold.
 
-{:.comment data-author="RT"}
-Say what you put in bold.
 </figcaption>
 </figure>
