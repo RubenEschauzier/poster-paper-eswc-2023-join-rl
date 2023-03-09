@@ -1,13 +1,21 @@
 ## Abstract
 <!-- Context      -->
-Relational databases successfully leverage reinforcement learning to optimize query plans.
+In recent years,
+relational databases have been successfully leveraging reinforcement learning to optimize query plans.
+In contrast, research into investigating the benefits of reinforcement learning in the context of graph databases and SPARQL query optimization has been limited.
 <!-- Need         -->
-This approach has been insufficiently translated to SPARQL query optimization.
+As such, there are opportunities for applying these existing techniques to SPARQL query optimization.
 <!-- Task         -->
-We will explore a reinforcement learning-based join plan optimizer, that works for SPARQL query optimization.
+As such, we explore a reinforcement learning-based join plan optimizer,
+that we design specifically for the selecting of join plans during SPARQL query planning.
 <!-- Object       -->
-In this poster paper we present some key aspects of our method and highlight open research problems.
+In this poster paper we present the key aspects of this method and highlight open research problems.
 <!-- Findings     -->
-We argue that while some aspects of relational database optimization can be reused, SPARQL query optimization presents unique challenges not encountered in relational databases.
+We argue that while some aspects of relational database optimization can be reused,
+SPARQL query optimization presents unique challenges not encountered in relational databases.
 <!-- Conclusion   -->
 <!-- Perspectives -->
+
+{:.comment data-author="RT"}
+Can we end the abstract here with a conclusion on a positive note?
+Something like "Nevertheless, because ..., we believe this will provide significant performance benefits in ..."
