@@ -1,7 +1,7 @@
 ## Preliminary Results
 {:#initialexperiments}
-We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our method.
-While the explored method is not ready for benchmarking, we show performance characteristics of a previous iteration of the optimizer that is undertrained and unoptimized. We have implemented our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default, cardinality-based, optimizer. [](#initresults) shows that the undertrained model can find better plans for seven templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). The Table further shows that our method takes significantly longer to optimize a query. This dominates the plan execution time due to the small size of the benchmark dataset, however for large RDF graphs, like wikidata, this should not be the case.
+We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our method. We show performance characteristics for an incomplete version of the model. We implement our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default, cardinality-based, optimizer. [](#initresults) shows that the undertrained model can find better plans for seven templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). 
+<!-- The search time of our method is longer than the comunica optimizer, however we expect this to be irrelevant for the large wikidata graph (Should I mention this, removed for the sake of getting to four pages) -->
 
 <figure id="initresults" class="table" markdown="1">
 
@@ -23,6 +23,5 @@ While the explored method is not ready for benchmarking, we show performance cha
 
 <figcaption markdown="block">
 Comparison of the query optimization and plan execution time, in seconds, of a previous version of our optimizer and the standard [Comunica](cite:cites taelman2018comunica) optimizer, with the faster plan execution in bold.
-
 </figcaption>
 </figure>

@@ -6,17 +6,13 @@ In contrast, research into investigating the benefits of reinforcement learning 
 <!-- Need         -->
 As such, there are opportunities for applying these existing techniques to SPARQL query optimization.
 <!-- Task         -->
-As such, we explore a reinforcement learning-based join plan optimizer,
+We explore a reinforcement learning-based join plan optimizer,
 that we design specifically for the selecting of join plans during SPARQL query planning.
 <!-- Object       -->
 In this poster paper we present the key aspects of this method and highlight open research problems.
 <!-- Findings     -->
 We argue that while some aspects of relational database optimization can be reused,
 SPARQL query optimization presents unique challenges not encountered in relational databases. 
-Nevertheless, initial benchmarks show promising results to join plan quality.
+Nevertheless, initial benchmarks show promising results.
 <!-- Conclusion   -->
 <!-- Perspectives -->
-
-{:.comment data-author="RT"}
-<!-- Can we end the abstract here with a conclusion on a positive note?
-Something like "Nevertheless, because ..., we believe this will provide significant performance benefits in ..." -->
