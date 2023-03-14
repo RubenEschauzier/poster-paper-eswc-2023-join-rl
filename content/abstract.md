@@ -1,7 +1,6 @@
 ## Abstract
 <!-- Context      -->
-In recent years,
-relational databases have been successfully leveraging reinforcement learning to optimize query plans.
+In recent years, relational databases successfully leverage reinforcement learning to optimize query plans.
 <!-- Need         -->
 Within graph databases and RDF quad stores,
 such research has been limited so far,
