@@ -27,6 +27,9 @@ figure {
     content: "]";
   }
 }
+span.comment {
+  color: purple !important;
+}
 del.comment {
   text-decoration: line-through;
   &:before, &[data-author]:before, &:after {
