@@ -1,6 +1,11 @@
 ## Preliminary Results
 {:#initialexperiments}
-We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our method. We show performance characteristics for an incomplete version of the model. We implement our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default, cardinality-based, optimizer. [](#initresults) shows that the undertrained model can find better plans for seven templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). 
+We implemented our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default, cardinality-based, optimizer.
+We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our method,
+and show performance characteristics for an incomplete version <span class="comment" data-author="RV">why?</span> of the model.
+<span class="comment" data-author="RV">Perhaps can be better phrased as <q>note that … is incomplete</q>, depending on what you mean with it</span>
+
+[](#initresults) shows that the undertrained model can find better plans for seven templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). 
 <!-- The search time of our method is longer than the comunica optimizer, however we expect this to be irrelevant for the large wikidata graph (Should I mention this, removed for the sake of getting to four pages) -->
 
 <figure id="initresults" class="table" markdown="1">
@@ -25,3 +30,5 @@ We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our metho
 Comparison of the query optimization and plan execution time, in seconds, of a previous version of our optimizer and the standard [Comunica](cite:cites taelman2018comunica) optimizer, with the faster plan execution in bold.
 </figcaption>
 </figure>
+
+<span class="comment" data-author="RV">For a poster paper, this space might be better spent on a graph to make it more visual. If you have time.</span>
