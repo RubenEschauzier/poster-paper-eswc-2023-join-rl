@@ -5,7 +5,7 @@ We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our metho
 and show performance characteristics for an incomplete version <span class="comment" data-author="RV">why?</span> of the model.
 <span class="comment" data-author="RV">Perhaps can be better phrased as <q>note that … is incomplete</q>, depending on what you mean with it</span>
 
-[](#initresults) shows that the undertrained model can find better plans for seven templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). 
+[](#initresults) shows that the undertrained model can find better plans for 7 templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). 
 <!-- The search time of our method is longer than the comunica optimizer, however we expect this to be irrelevant for the large wikidata graph (Should I mention this, removed for the sake of getting to four pages) -->
 
 <figure id="initresults" class="table" markdown="1">
