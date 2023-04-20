@@ -1,10 +1,10 @@
 ## Preliminary Results
 {:#initialexperiments}
-We implemented our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to its default, cardinality-based, optimizer.
+We implement our optimizer in the TypeScript-based [Comunica query engine](cite:cites taelman2018comunica) and compare it to the default cardinality-based optimizer.
 We use the WatDiv [benchmark](cite:cites alucc2014diversified) to test our method,
-and show performance characteristics of the model. Note that this model version is incomplete and undertrained due to time constraints.
-[](#initresults) shows that the undertrained model can find better plans for 7 templates, which we believe we can improve using the data efficiency and SPARQL specific adjustments mentioned in [](#method). 
-<!-- The search time of our method is longer than the comunica optimizer, however we expect this to be irrelevant for the large wikidata graph (Should I mention this, removed for the sake of getting to four pages) -->
+and show performance characteristics of a preliminary version of the model.
+[](#initresults) shows that the model can find better plans for 7 templates, which we believe we can improve using the data efficiency and SPARQL-specific adjustments mentioned in [](#method). The search time of our method is significantly longer than the standard comunica optimizer. However, we run these benchmarks on a dataset with only about 100,000 triples. For large RDF graphs, like Wikidata, we expect that the execution of the join plan dominates the total query execution time.
+<!-- The search time of our method is longer than the comunica optimizer, however, we expect this to be irrelevant for large graphs like Wikidata (Should I mention this, removed for the sake of getting to four pages) -->
 
 <figure id="initresults" class="table" markdown="1">
 
