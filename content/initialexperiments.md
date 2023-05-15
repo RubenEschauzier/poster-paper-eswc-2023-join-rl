@@ -27,3 +27,4 @@ and show performance characteristics of a preliminary version of the model.
 Comparison of the query optimization and plan execution time, in seconds, of a previous version of our optimizer and the standard [Comunica](cite:cites taelman2018comunica) optimizer, with the faster plan execution in bold.
 </figcaption>
 </figure>
+<!-- This -->
