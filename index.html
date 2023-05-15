@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title property="foaf:name schema:name">Reinforcement Learning-based SPARQL Join Ordering Optimizer</title>
+  <link rel="stylesheet" media="screen" href="styles/screen.css" />
+  <link rel="stylesheet" media="print"  href="styles/print.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" media="all"    href="styles/katex.css" />
+  <meta name="citation_title" content="Reinforcement Learning-based SPARQL Join Ordering Optimizer">
+  <meta name="citation_author" content="Ruben Eschauzier" />
+  <meta name="citation_author" content="Ruben Taelman" />
+  <meta name="citation_author" content="Meike Morren" />
+  <meta name="citation_author" content="Ruben Verborgh" />
+  
+  <meta name="citation_publication_date" content="2023/05/15" />
+</head>
+
+<body prefix="dctypes: http://purl.org/dc/dcmitype/ pimspace: http://www.w3.org/ns/pim/space# rsa: http://www.w3.org/ns/auth/rsa# cert: http://www.w3.org/ns/auth/cert# wgs: http://www.w3.org/2003/01/geo/wgs84_pos# biblio: http://purl.org/net/biblio# bibo: http://purl.org/ontology/bibo/ book: http://purl.org/NET/book/vocab# ov: http://open.vocab.org/terms/ doap: http://usefulinc.com/ns/doap# dbr: http://dbpedia.org/resource/ dbp: http://dbpedia.org/property/ sio: http://semanticscience.org/resource/ opmw: http://www.opmw.org/ontology/ deo: http://purl.org/spar/deo/ doco: http://purl.org/spar/doco/ cito: http://purl.org/spar/cito/ fabio: http://purl.org/spar/fabio/ solid: http://www.w3.org/ns/solid/terms# acl: http://www.w3.org/ns/auth/acl# dio: https://w3id.org/dio# lsc: http://linkedscience.org/lsc/ns#" typeof="schema:CreativeWork sioc:Post prov:Entity lsc:Research">
+  <header>
+  <h1 id="reinforcement-learning-based-sparql-join-ordering-optimizer">Reinforcement Learning-based SPARQL Join Ordering Optimizer</h1>
+
+  <ul id="authors">
+    <li><a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="" typeof="foaf:Person schema:Person" resource="">Ruben Eschauzier</a><a href="#idlab"><sup>1</sup></a></li>
+    <li><a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="https://www.rubensworks.net/" typeof="foaf:Person schema:Person" resource="https://www.rubensworks.net/#me">Ruben Taelman</a><a href="#idlab"><sup>1</sup></a></li>
+    <li><a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="https://www.meikemorren.com/" typeof="foaf:Person schema:Person" resource="https://www.meikemorren.com/">Meike Morren</a><a href="#Marketing"><sup>2</sup></a></li>
+    <li><a rev="lsc:participatesIn" property="foaf:maker schema:creator schema:author schema:publisher" href="https://ruben.verborgh.org/" typeof="foaf:Person schema:Person" resource="https://ruben.verborgh.org/profile/#me">Ruben Verborgh</a><a href="#idlab"><sup>1</sup></a></li>
+  </ul>
+
+  <ul id="affiliations">
+    <li id="idlab"><sup>1</sup>IDLab,
+          Department of Electronics and Information Systems,
+          Ghent University – imec</li>
+    <li id="Marketing"><sup>2</sup>Marketing,
+               School of Business and Economics, 
+               Vrije Universiteit Amsterdam
+  <br />E-mail: ruben.eschauzier@ugent.be</li>
+  </ul>
+
+</header>
+
+<!-- Hack to make our custom fonts load in print-mode -->
+<!-- https://stackoverflow.com/questions/39364259/chrome-print-preview-doesnt-load-media-only-print-font-face -->
+<p><span class="printfont1"> </span>
+<span class="printfont2"> </span>
+<span class="printfont3"> </span>
+<span class="printfont4"> </span></p>
+
+<div id="content">
+  <section id="abstract" inlist="" rel="schema:hasPart" resource="#abstract">
+<div datatype="rdf:HTML" property="schema:description">
+      <h2 property="schema:name">Abstract</h2>
+      <!-- Context      -->
+      <p>In recent years, relational databases successfully leverage reinforcement learning to optimize query plans.
+<!-- Need         -->
+For graph databases and RDF quad stores, such research has been limited, so there is a need to understand the impact of reinforcement learning techniques.
+<!-- Task         -->
+We explore a reinforcement learning-based join plan optimizer that we design specifically for optimizing join plans during SPARQL query planning. 
+<!-- Object       -->
+This paper presents key aspects of this method and highlights open research problems. 
+<!-- Findings     -->
+We argue that while we can reuse aspects of relational database optimization,
+SPARQL query optimization presents unique challenges not encountered in relational databases. 
+<!-- Conclusion   -->
+Nevertheless, initial benchmarks show promising results
+<!-- Perspectives -->
+that warrant further exploration.</p>
+    </div>
+</section>
+
+
+<main>
+  <!-- Add sections by specifying their file name, excluding the '.md' suffix. -->
+  <section id="introduction" inlist="" rel="schema:hasPart" resource="#introduction">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Introduction</h2>
+
+        <p>Optimizing the order in which database management systems execute joins is a well-studied topic in database literature because it heavily influences the performance characteristics of queries <span class="references">[<a href="#ref-1">1</a>]</span>.
+SPARQL endpoints over consistently evolving datasets, like Wikidata, can benefit from an algorithm that optimizes queries based on previous experiences. 
+Different signals exist to inform an appropriate choice of join order, such as cardinalities. One such signal is <em>previous experiences</em>. 
+We use previous experiences as a predictor to produce better join plans for future queries. <br />
+In recent literature, reinforcement learning(RL)-based optimizers that use <em>greedy search procedures</em>, guided by a learned <em>value function</em>, achieve impressive results in relational databases. 
+Neo <span class="references">[<a href="#ref-2">2</a>]</span> shows that learned optimizers can match and surpass state-of-the-art commercial optimizers. <br />
+In SPARQL, machine learning is primarily used to predict query performance. These approaches <span class="references">[<a href="#ref-3">3</a>, <a href="#ref-4">4</a>, <a href="#ref-5">5</a>]</span> use supervised machine learning with a static dataset of query executions.
+Learned query optimizers use reinforcement learning to dynamically generate training data, complicating the use of existing query performance prediction methods. 
+The April <span class="references">[<a href="#ref-6">6</a>]</span> optimizer uses reinforcement learning for query optimization, with a one-hot encoded <span class="references">[<a href="#ref-7">7</a>]</span> feature vector denoting the presence of RDF terms in joins. However, the paper does not report any performance characteristics. <br />
+We fill this gap in the literature by exploring a fully-fledged RL-based query optimizer for SPARQL join order optimization on SPARQL endpoints. Endpoints query over the same dataset, likely making the previous experience signal stronger for join order optimization.
+We model our approach after the RTOS <span class="references">[<a href="#ref-1">1</a>]</span> optimizer for relational queries, which uses Tree-LSTM neural networks <span class="references">[<a href="#ref-8">8</a>]</span> to predict the expected latency of a join plan.</p>
+      </div>
+</section>
+
+  <section id="method" inlist="" rel="schema:hasPart" resource="#method">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Method</h2>
+        <p>To iteratively build up an optimized join plan, the RL-based optimizer greedily adds the join that minimizes the estimated query execution time at each iteration. For the first iteration, we have the result sets of all triple patterns, and in each subsequent iteration, we join two result sets.
+We estimate the execution time of the query using a neural network, which we train to minimize the mean squared error between predicted and actual query execution time. We feed a numerical representation of the current join plan as an input to the neural network. <br />
+<strong>Join plan representation</strong> Like in the optimizer RTOS <span class="references">[<a href="#ref-1">1</a>]</span>, we represent join plans as a tree that we build from the bottom up. Each leaf node represents the result set of a triple pattern, and internal nodes represent join result sets. We represent result sets using their cardinality, the presence and location of variables, named nodes and literals, and a vector representation of the predicate.
+We learn the predicate representation vectors by applying the RDF2Vec <span class="references">[<a href="#ref-9">9</a>]</span> algorithm to the RDF graph. <br />
+RDF2Vec generates learned vector representations of RDF terms that encode information on what RDF terms co-occur often. RDF2Vec first generates random walks on the input RDF graph, then for each random walk, it randomly removes an RDF term and trains a neural network to predict the missing term. The weights obtained during the model training are the feature vectors of the RDF terms in the graph. RDF2Vec does not learn variable representations because an RDF graph has no variables. The subject and object of triple patterns are often variables, so we do not encode named nodes in these positions.
+We obtain the representations for intermediate joins by applying an N-ary Tree-LSTM <span class="references">[<a href="#ref-8">8</a>]</span> neural network on the result sets representations involved in the join. These representations are optimized during training, thus allowing the model to determine which features of the result sets involved in the join are important. Finally, at the (partial) join plan root node, we apply the Child-Sum Tree-LSTM network <span class="references">[<a href="#ref-8">8</a>]</span> to all unjoined result sets to obtain the numerical join plan representation.<br />
+<strong>Data efficiency &amp; SPARQL-specific adjustments</strong> Data generation using query execution is slow; we account for this by applying two data efficiency techniques. First, we include a <em>time-out</em> set according to existing optimizers. We effectively truncate our optimization variable while ensuring the optimal query plan will not reach the time-out. Second, we use <em>experience replay</em> <span class="references">[<a href="#ref-10">10</a>]</span> to store previous (expensive) query executions and reuse them for training. <br />
+Relational RL-based optimization approaches use <em>one-hot encoding</em> <span class="references">[<a href="#ref-7">7</a>]</span> of database attributes to create feature vectors. However, large graphs like Wikidata can contain over 100 million unique entries. One-hot encoding that many attributes would create unwieldy vectors and degrade performance. To improve scalability, we do not use one-hot encoding in our approach, instead, we use dense feature encoding techniques to capture state information in fixed-size vectors. <br />
+<strong>Open Challenges</strong> We have not found a way to encode connections between triple patterns. To encode all information in the query graph, these encodings should reflect the possible connections between triple patterns, like object-object, subject-subject, object-subject, and subject-object. Which makes using a simple adjacency matrix infeasible. Furthermore, our approach can only optimize basic graph patterns; in future work, this approach should be extended to more complex SPARQL query operations. Finally, we do not learn feature representations for variables; to enrich our triple pattern representation, we should encode variables based on the other RDF terms in the triple pattern.</p>
+      </div>
+</section>
+
+  <section id="initialexperiments" inlist="" rel="schema:hasPart" resource="#initialexperiments">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Preliminary Results</h2>
+        <p>We implement our optimizer in the TypeScript-based Comunica query engine <span class="references">[<a href="#ref-11">11</a>]</span> and compare it to the default cardinality-based optimizer.
+We use the WatDiv benchmark <span class="references">[<a href="#ref-12">12</a>]</span> to test our method,
+and show performance characteristics of a preliminary version of the model.
+<a href="#initresults">Table 1</a> shows that the model can find better plans for 7 templates, which we believe we can improve using the data efficiency and SPARQL-specific adjustments mentioned in <a href="#method">Section 2</a>. The search time of our method is significantly longer than the standard comunica optimizer. However, we run these benchmarks on a dataset with only about 100,000 triples. For large RDF graphs, like Wikidata, we expect that the execution of the join plan dominates the total query execution time.</p>
+
+        <figure id="initresults" class="table">
+
+          <table>
+            <thead>
+              <tr>
+                <th>Query Template</th>
+                <th>C1</th>
+                <th>C2</th>
+                <th>C3</th>
+                <th>F1</th>
+                <th>F2</th>
+                <th>F3</th>
+                <th>F4</th>
+                <th>F5</th>
+                <th>L1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Planning (RL)</td>
+                <td>0.5028</td>
+                <td>1.000</td>
+                <td>0.277</td>
+                <td>0.214</td>
+                <td>0.347</td>
+                <td>0.160</td>
+                <td>0.800</td>
+                <td>0.278</td>
+                <td>0.027</td>
+              </tr>
+              <tr>
+                <td>Execution (RL)</td>
+                <td>3.116</td>
+                <td>2.577</td>
+                <td>0.583</td>
+                <td>0.100</td>
+                <td>0.090</td>
+                <td>0.062</td>
+                <td>1.906</td>
+                <td><strong>0.059</strong></td>
+                <td><strong>0.006</strong></td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td>Planning (Comunica)</td>
+                <td>0.007</td>
+                <td>0.008</td>
+                <td>0.017</td>
+                <td>0.002</td>
+                <td>0.003</td>
+                <td>0.005</td>
+                <td>0.005</td>
+                <td>0.005</td>
+                <td>0.002</td>
+              </tr>
+              <tr>
+                <td>Execution (Comunica)</td>
+                <td><strong>0.076</strong></td>
+                <td><strong>0.001</strong></td>
+                <td><strong>0.490</strong></td>
+                <td><strong>0.001</strong></td>
+                <td><strong>0.005</strong></td>
+                <td><strong>0.008</strong></td>
+                <td><strong>0.012</strong></td>
+                <td>0.194</td>
+                <td>0.032</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Query Template</th>
+                <th>L2</th>
+                <th>L5</th>
+                <th>S1</th>
+                <th>S2</th>
+                <th>S3</th>
+                <th>S4</th>
+                <th>S5</th>
+                <th>S6</th>
+                <th>S7</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Planning (RL)</td>
+                <td>0.025</td>
+                <td>0.024</td>
+                <td>0.689</td>
+                <td>0.060</td>
+                <td>0.059</td>
+                <td>0.066</td>
+                <td>0.059</td>
+                <td>0.021</td>
+                <td>0.028</td>
+              </tr>
+              <tr>
+                <td>Execution (RL)</td>
+                <td><strong>0.001</strong></td>
+                <td><strong>0.002</strong></td>
+                <td>2.242</td>
+                <td>0.011</td>
+                <td><strong>0.005</strong></td>
+                <td><strong>0.000</strong></td>
+                <td><strong>0.002</strong></td>
+                <td>0.008</td>
+                <td>0.002</td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td>Planning (Comunica)</td>
+                <td>0.001</td>
+                <td>0.001</td>
+                <td>0.006</td>
+                <td>0.002</td>
+                <td>0.002</td>
+                <td>0.002</td>
+                <td>0.002</td>
+                <td>0.002</td>
+                <td>0.002</td>
+              </tr>
+              <tr>
+                <td>Execution (Comunica)</td>
+                <td>0.006</td>
+                <td>0.007</td>
+                <td><strong>0.139</strong></td>
+                <td><strong>0.009</strong></td>
+                <td>0.008</td>
+                <td>0.005</td>
+                <td>0.009</td>
+                <td><strong>0.001</strong></td>
+                <td><strong>0.000</strong></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <figcaption>
+            <p><span class="label">Table 1:</span> Comparison of the query optimization and plan execution time, in seconds, of a previous version of our optimizer and the standard Comunica <span class="references">[<a href="#ref-11">11</a>]</span> optimizer, with the faster plan execution in bold.</p>
+          </figcaption>
+        </figure>
+        <!-- This -->
+      </div>
+</section>
+
+  <section id="conclusion" inlist="" rel="schema:hasPart" resource="#conclusion">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Conclusion</h2>
+        <p>In this paper, we explore a novel RL-based join plan optimizer for SPARQL endpoint query execution.
+Initial experiments show that the model can generate better join plans than existing cardinality-based optimizers for 7 query templates of the WatDiv benchmark. 
+We plan to improve the model by enhancing data efficiency during training. 
+We propose to use query <em>time-outs</em> based on existing query optimizers to reduce the time spent executing bad query plans.
+Additionally, we propose to use <em>experience replay</em> to reuse query execution information during training. 
+For future work, we should include information on how triple pattern result sets connect to other result sets in the query, encode the RDF terms present in the subject and object locations of a triple pattern, and extend our approach to more complex SPARQL operations.</p>
+      </div>
+</section>
+
+  <section id="Acknowledgements" inlist="" rel="schema:hasPart" resource="#Acknowledgements">
+<div datatype="rdf:HTML" property="schema:description">
+        <h2 property="schema:name">Acknowledgements</h2>
+        <p>This work is supported by SolidLab Vlaanderen (Flemish Government, EWI and RRF project VV023/10). Ruben Taelman is a postdoctoral fellow of the Research Foundation – Flanders (FWO) (1274521N)</p>
+      </div>
+</section>
+
+
+
+</main>
+
+<footer><section>
+<h2 id="references">References</h2>
+<dl class="references">
+  <dt id="ref-1">[1]</dt>
+  <dd resource="#yu2020reinforcement" typeof="schema:Article">Yu, X., Li, G., Chai, C., Tang, N.: Reinforcement learning with tree-lstm for join order selection. In: 2020 IEEE 36th International Conference on Data Engineering (ICDE)</dd>
+  <dt id="ref-2">[2]</dt>
+  <dd resource="#marcus2019neo" typeof="schema:Article">Marcus, R., Negi, P., Mao, H., Zhang, C., Alizadeh, M., Kraska, T., Papaemmanouil, O., Tatbul, N.: Neo: A learned query optimizer. arXiv preprint arXiv:1904.03711.</dd>
+  <dt id="ref-3">[3]</dt>
+  <dd resource="#hasan2014machine" typeof="schema:Article">Hasan, R., Gandon, F.: A machine learning approach to sparql query performance prediction. In: 2014 IEEE/WIC/ACM International Joint Conferences on Web Intelligence (WI) and Intelligent Agent Technologies (IAT)</dd>
+  <dt id="ref-4">[4]</dt>
+  <dd resource="#zhang2018learning" typeof="schema:Article">Zhang, W.E., Sheng, Q.Z., Qin, Y., Taylor, K., Yao, L.: Learning-based SPARQL query performance modeling and prediction. world wide web.</dd>
+  <dt id="ref-5">[5]</dt>
+  <dd resource="#casalssparql" typeof="schema:Article">Casals, D., Buil-Aranda, C., Valle, C.: SPARQL query execution time prediction using Deep Learning.</dd>
+  <dt id="ref-6">[6]</dt>
+  <dd resource="#wang2020april" typeof="schema:Article">Wang, H., Qi, Z., Zheng, L., Feng, Y., Ouyang, J., Zhang, H., Zhang, X., Shen, Z., Liu, S.: April: An automatic graph data management system based on reinforcement learning. In: Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management</dd>
+  <dt id="ref-7">[7]</dt>
+  <dd resource="#muller2016introduction" typeof="schema:Book">Müller, A.C., Guido, S.: Introduction to machine learning with Python: a guide for data scientists.</dd>
+  <dt id="ref-8">[8]</dt>
+  <dd resource="#tai2015improved" typeof="schema:Article">Tai, K.S., Socher, R., Manning, C.D.: Improved semantic representations from tree-structured long short-term memory networks. arXiv preprint arXiv:1503.00075.</dd>
+  <dt id="ref-9">[9]</dt>
+  <dd resource="#ristoski2016rdf2vec" typeof="schema:Article">Ristoski, P., Paulheim, H.: Rdf2vec: Rdf graph embeddings for data mining. In: The Semantic Web–ISWC 2016: 15th International Semantic Web Conference, Kobe, Japan, October 17–21, 2016, Proceedings, Part I 15</dd>
+  <dt id="ref-10">[10]</dt>
+  <dd resource="#lin1992self" typeof="schema:Article">Lin, L.-J.: Self-improving reactive agents based on reinforcement learning, planning and teaching.</dd>
+  <dt id="ref-11">[11]</dt>
+  <dd resource="#taelman2018comunica" typeof="schema:Article">Taelman, R., Van Herwegen, J., Vander Sande, M., Verborgh, R.: Comunica: a modular SPARQL query engine for the web. In: The Semantic Web–ISWC 2018: 17th International Semantic Web Conference, Monterey, CA, USA, October 8–12, 2018, Proceedings, Part II 17</dd>
+  <dt id="ref-12">[12]</dt>
+  <dd resource="#alucc2014diversified" typeof="schema:Article">Aluç, G., Hartig, O., Özsu, M.T., Daudjee, K.: Diversified stress testing of RDF data management systems. In: The Semantic Web–ISWC 2014: 13th International Semantic Web Conference, Riva del Garda, Italy, October 19-23, 2014. Proceedings, Part I 13</dd>
+</dl>
+</section>
+</footer>
+
+</div>
+
+
+
+</body>
+</html>
